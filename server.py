@@ -54,4 +54,39 @@ def get_by_id(id):
     
     return abort(404, "No product with such ID")
 
+#Get /api/product/cheapest
+
+@app.route("/api/product/cheapest")
+def cheapest_product():
+
+    solution = catalog[0]
+    for prod in catalog:
+        if prod["price"] < solution["price"]:
+            solution = prod
+            
+    return json.dumps(solution)
+
+@app.get("/api/categories")
+def unique_categories():
+    categories = []
+    for prod in catalog:
+        category = prod["category"]
+        if not category in categories:
+            categories.append(category)
+    
+    return json.dumps(categories)
+
+
+
+@app.route("/api/catalog/<category>")
+def product_category(category):
+    results = []
+    for product in catalog:
+        if product["category"] == category:
+            results.append(product)
+            
+    return json.dumps(results)
+    
+
+
 app.run(debug=True)
