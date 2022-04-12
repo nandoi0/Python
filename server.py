@@ -3,9 +3,11 @@ from flask import Flask, abort, request
 from mock_data import catalog
 from config import db
 from bson import ObjectId
+from flask_cors import CORS
 
 
-app = Flask("Server") 
+app = Flask("Server")
+CORS(app) 
 
 @app.route("/")
 def home():
@@ -32,7 +34,11 @@ def get_catalog():
 
    for prod in cursor:
        prod["_id"] = str(prod["_id"])
-       products.append(products)
+       products.append(prod)
+
+       return json.dumps(products)
+    
+   
 
 
 @app.route("/api/catalog", methods=["post"])
